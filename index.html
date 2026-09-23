@@ -477,47 +477,112 @@ tagline 改做「<一句話介紹>」。
 
 <!-- ══════ 堂 4 ══════ -->
 <section data-k="4">
-  <h2>堂 4 · 你自己話事</h2>
-  <p class="sub">今日冇指定要做咩。<b>你揀</b>，然後你寫 prompt。</p>
+  <h2>堂 4 · 填滿三個新區</h2>
+  <p class="sub">骨架已經有<b>新聞區、測驗區、小測區</b>。今日你要做嘅係<b>填內容</b>＋<b>改一個功能</b>。</p>
   <table>
     <thead><tr><th style="width:26%">功能</th><th style="width:44%">Prompt</th></tr></thead>
     <tbody>
       <tr>
-        <td data-l="功能"><div class="fname">叫 AI 畀建議</div>
-          <div class="fdesc">唔知做咩好就用呢條</div></td>
+        <td data-l="功能"><div class="fname">先明白測驗點運作</div>
+          <div class="fdesc">填題目之前，問一次</div></td>
         <td data-l="Prompt">
-          <pre class="prompt" id="d1">我個學習平台而家有：首頁、側欄、科目頁、內容頁。
+          <pre class="prompt" id="d1">我個 platform 有一個測驗區，題目係咁樣存嘅：
 
-畀我 5 個「中學生會覺得有用」嘅功能建議。
-每個寫：功能名、解決咩問題、難度（易／中／難）。
-只做得到「一個 HTML 檔內」嘅嘢。</pre>
+{ q:"問題", options:["A","B","C"], answer:0, explain:"解釋" }
+
+用 3 句話我知：answer:0 係咩意思？
+如果我加一題，有咩位容易打錯？</pre>
           <button class="copy" data-t="d1">複製</button>
-          <div class="why"><b>揀「易」</b>：做完一個易嘅，好過做唔完一個難嘅。</div>
+          <div class="why"><b>最易錯</b>：<code>answer</code> 由 0 開始數。第一個選項係 0，唔係 1。</div>
         </td>
       </tr>
       <tr>
-        <td data-l="功能"><div class="fname">做你揀嗰個</div>
-          <div class="fdesc">呢條要自己填</div></td>
+        <td data-l="功能"><div class="fname">加一則新聞</div>
+          <div class="fdesc">新聞區</div></td>
         <td data-l="Prompt">
-          <pre class="prompt" id="d2">加一個 <你揀嘅功能>。
+          <pre class="prompt" id="d2">喺【資料區】嘅 news 入面加一則新聞：
 
-<用你自己嘅話描述：撳咩、會出咩、喺邊度出現>
+日期：<今日日期>
+標題：<你嘅標題>
+內容：<兩三句>
 
-只加呢樣，其他唔好郁。
-做完話我知你改咗邊幾行。</pre>
+只改【資料區】。加完話我知我喺邊度見到佢。</pre>
           <button class="copy" data-t="d2">複製</button>
-          <div class="why"><b>最緊要係中間嗰句</b>。你描述得越具體，佢做得越準。呢個就係「提出需求」。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">加一份測驗</div>
+          <div class="fdesc">測驗區（做完計分）</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="d3">喺【資料區】嘅 quizzes 入面加一份新測驗：
+
+科目：<科目名>
+標題：<你嘅測驗名>
+題目：
+1. <問題> 選項：<A> / <B> / <C>，正確答案係 <第幾個>，解釋：<一句>
+2. <問題> 選項：<A> / <B> / <C>，正確答案係 <第幾個>，解釋：<一句>
+3. <問題> 選項：<A> / <B> / <C>，正確答案係 <第幾個>，解釋：<一句>
+
+只改【資料區】。做完話我知每一題嘅 answer 你填咗幾多。</pre>
+          <button class="copy" data-t="d3">複製</button>
+          <div class="why"><b>呢條教你</b>：寫需求時要「一次過畀齊資料」，唔好分十次問。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">加幾題小測</div>
+          <div class="fdesc">小測區（即時知對錯）</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="d4">喺【資料區】嘅 quick 入面加 3 題快問快答：
+
+1. <問題> 選項：<A> / <B> / <C>，正確答案 <第幾個>，解釋：<一句>
+2. <問題> 選項：<A> / <B> / <C>，正確答案 <第幾個>，解釋：<一句>
+3. <問題> 選項：<A> / <B> / <C>，正確答案 <第幾個>，解釋：<一句>
+
+只改【資料區】。</pre>
+          <button class="copy" data-t="d4">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">改一個功能</div>
+          <div class="fdesc">要自己揀、自己寫</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="d5">我想改 <邊個區／邊個位>：<由點樣> 變成 <點樣>。
+
+<用你自己嘅話描述你想要咩>
+
+只改呢部分，其他唔好郁。
+做完話我知你改咗邊幾行。</pre>
+          <button class="copy" data-t="d5">複製</button>
+          <div class="why"><b>冇靈感？呢幾個「易」嘅</b>：測驗加限時、小測隨機出題、答對出 🎉、新聞置頂最新一則。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">進階：加一個全新區</div>
+          <div class="fdesc">做完晒、仲有時間</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="d6">我想加一個全新嘅區叫「<區名>」（例：影片區、成績區、相片區）。
+
+入面要有：
+1. <功能一>
+2. <功能二>
+
+參照而家「新聞區」嘅做法：側欄加一個掣、一個列表頁、一個詳細頁。
+【資料區】加一個新嘅資料陣列。
+
+先唔好改 code。用 5 句話講你打算改邊幾部分。</pre>
+          <button class="copy" data-t="d6">複製</button>
+          <div class="why"><b>呢條最似真做嘢</b>：先叫 AI 講方案 → 你同意 → 才動手。</div>
         </td>
       </tr>
       <tr>
         <td data-l="功能"><div class="fname">出去前先驗收</div>
-          <div class="fdesc">加完之後做</div></td>
+          <div class="fdesc">改完之後做</div></td>
         <td data-l="Prompt">
-          <pre class="prompt" id="d3">你用 5 句話我知：你加嘅嘢應該點樣見到？
+          <pre class="prompt" id="d7">你用 5 句話我知：你加嘅嘢應該點樣見到？
 包括要撳咩、應該出咩。
 
 然後列出你有可能搞壞嘅 2 個地方。</pre>
-          <button class="copy" data-t="d3">複製</button>
+          <button class="copy" data-t="d7">複製</button>
           <div class="why"><b>為咩要問</b>：佢答完你就知去邊度試。唔試過唔算完成。</div>
         </td>
       </tr>
