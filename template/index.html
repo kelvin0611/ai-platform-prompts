@@ -8,14 +8,17 @@
   頂部橫梁、左邊側欄、右邊內容、手機變抽屜。
 
   ✅ 已經幫你做好：
-     ・頂部橫梁（有平台名、☰ 掣）
-     ・左邊側欄（自動列出你所有科目同內容）
-     ・手機版（側欄變抽屜，撳出面閂）
-     ・三個頁面：首頁 → 科目頁 → 內容頁
-     ・靚嘅配色同字體、卡片、動畫
+     ・頂部橫梁（平台名、☰）
+     ・左邊側欄（自動列出所有科目同內容）
+     ・手機版（側欄變抽屜）
+     ・三層導覽：首頁 → 科目頁 → 內容頁
+     ・【科目】筆記 ＋ 虛擬實驗（iframe）
+     ・【新聞區】列表 → 詳細頁
+     ・【測驗區】選擇題 → 交卷 → 計分 ＋ 逐題對錯
+     ・【小測區】快問快答 → 即時對錯 → 連對計數
 
   ✏️ 你每堂要做嘅：
-     1. 改下面【資料區】嘅內容（改名、加科目、加筆記）
+     1. 改下面【資料區】嘅內容（改名、加科目、加新聞、加題目）
      2. 用 Prompt 叫 AI 加一個新功能
 
   ⚠️ 【引擎區】唔好改 —— 要改就叫 AI 改，講清楚你要咩。
@@ -35,6 +38,9 @@
   --brand-300:#A5D7E8; --brand-400:#77C3DD; --brand-500:#51B2D3;
   --brand-600:#459DBB; --brand-700:#3987A3; --brand-800:#2C7088;
   --brand-900:#1F586C; --brand-950:#144557;
+
+  --ok:#059669; --ok-bg:#ECFDF5;
+  --no:#DC2626; --no-bg:#FEF2F2;
 
   --ink:#0f172a; --muted:#64748b; --line:#CBE8F2;
   --dur-1:120ms; --dur-2:240ms;
@@ -93,23 +99,19 @@ aside .shead{
   padding:14px 16px 8px; font-size:11px; font-weight:700;
   letter-spacing:1.4px; color:var(--brand-700); text-transform:uppercase;
 }
-aside a, aside .sitem{
+aside .sitem{
   display:block; width:100%; text-align:left; border:0; background:none;
   padding:8px 16px; font-size:14.5px; color:var(--brand-900);
-  text-decoration:none; line-height:1.5;
-  border-left:3px solid transparent;
+  line-height:1.5; border-left:3px solid transparent;
 }
 aside .sitem:hover{background:var(--brand-200)}
 aside .sitem.on{
   background:var(--brand-200); border-left-color:var(--brand-600); font-weight:600;
 }
 aside .sitem .ic{margin-right:7px}
-aside .sub{
-  display:block; padding:9px 16px 6px; font-size:13px; font-weight:700;
-  color:var(--brand-800); margin-top:6px;
-}
 aside .child{padding-left:34px; font-size:13.5px; color:var(--brand-800)}
 aside .none{padding:6px 16px 6px 34px; font-size:12.5px; color:var(--brand-700); opacity:.75}
+aside .divider{height:1px; background:var(--brand-200); margin:8px 16px}
 
 main{flex:1; min-width:0; padding:32px 24px 80px; overflow-x:hidden}
 .page{animation:fadeUp var(--dur-2) var(--ease-out) both}
@@ -160,7 +162,69 @@ iframe.lab{width:100%; height:430px; border:1px solid var(--line);
   text-align:center; color:var(--muted); padding:44px 18px;
   border:1px dashed var(--brand-300); border-radius:14px; background:#fff;
 }
+.pill{
+  display:inline-block; padding:2px 9px; border-radius:999px; font-size:11.5px;
+  font-weight:700; background:var(--brand-100); color:var(--brand-800);
+}
+.date{font-size:12.5px; color:var(--muted); font-variant-numeric:tabular-nums}
 footer{text-align:center; color:var(--muted); font-size:12.5px; padding:16px}
+
+/* ── 新聞 ── */
+.news-item{display:block; width:100%; text-align:left; background:#fff;
+  border:1px solid var(--line); border-radius:14px; padding:15px 17px; margin-bottom:10px;}
+.news-item:hover{border-color:var(--brand-400)}
+.news-item .nt{font-size:16.5px; font-weight:600}
+.news-item .nb{font-size:14px; color:var(--muted); margin-top:3px;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+
+/* ── 測驗 / 小測 ── */
+.q{margin-bottom:20px}
+.q .qh{font-size:16.5px; font-weight:600; margin-bottom:10px}
+.q .qh .n{
+  display:inline-grid; place-items:center; width:24px; height:24px; margin-right:8px;
+  border-radius:50%; background:var(--brand-100); color:var(--brand-800);
+  font-size:12.5px; font-weight:700; vertical-align:1px;
+}
+.opt{
+  display:flex; align-items:center; gap:11px; width:100%; text-align:left;
+  background:#fff; border:1.5px solid var(--line); border-radius:11px;
+  padding:12px 14px; margin-bottom:8px; font-size:15.5px; color:inherit;
+}
+.opt:hover{border-color:var(--brand-400); background:var(--brand-50)}
+.opt .k{
+  flex:0 0 24px; height:24px; border-radius:50%; background:var(--brand-100);
+  color:var(--brand-800); display:grid; place-items:center;
+  font-size:12.5px; font-weight:700;
+}
+.opt.sel{border-color:var(--brand-600); background:var(--brand-100)}
+.opt.sel .k{background:var(--brand-600); color:#fff}
+.opt.right{border-color:var(--ok); background:var(--ok-bg)}
+.opt.right .k{background:var(--ok); color:#fff}
+.opt.wrong{border-color:var(--no); background:var(--no-bg)}
+.opt.wrong .k{background:var(--no); color:#fff}
+.opt[disabled]{cursor:default}
+
+.btn{
+  border:0; border-radius:11px; padding:12px 22px; font-size:16px;
+  font-weight:700; background:var(--brand-600); color:#fff;
+}
+.btn:hover{background:var(--brand-700)}
+.btn.ghost{background:var(--brand-100); color:var(--brand-800)}
+.btn:disabled{opacity:.45; cursor:not-allowed}
+.btnrow{display:flex; gap:10px; flex-wrap:wrap; margin-top:8px}
+
+.score{
+  background:#fff; border:1px solid var(--line); border-radius:14px;
+  padding:22px; text-align:center; margin-bottom:16px;
+}
+.score .big{font-size:42px; font-weight:800; color:var(--brand-600);
+  line-height:1.1; font-variant-numeric:tabular-nums}
+.score .sub{color:var(--muted); font-size:14px}
+.fb{font-size:13.5px; margin-top:8px; padding:9px 12px; border-radius:9px;}
+.fb.ok{background:var(--ok-bg); color:#065F46}
+.fb.no{background:var(--no-bg); color:#991B1B}
+.progress{font-size:13px; color:var(--muted); margin-bottom:14px;
+  font-variant-numeric:tabular-nums}
 
 /* ═══════════ 手機（< 768px）：側欄變抽屜 ═══════════ */
 #backdrop{display:none}
@@ -202,7 +266,7 @@ footer{text-align:center; color:var(--muted); font-size:12.5px; padding:16px}
 
 <div class="shell">
   <aside id="sidebar">
-    <div class="shead">我嘅科目</div>
+    <div class="shead">我嘅平台</div>
     <div id="sideList"></div>
   </aside>
   <div id="backdrop" hidden></div>
@@ -216,16 +280,24 @@ footer{text-align:center; color:var(--muted); font-size:12.5px; padding:16px}
    ║ 【資料區】—— 你主要改呢度                                    ║
    ╚══════════════════════════════════════════════════════════════╝
 
-   改名、加科目、加筆記，全部喺呢度。改完撳 ▶ 跑一次即刻見到。
+   改名、加科目、加新聞、加題目，全部喺呢度。改完撳 ▶ 即刻見到。
 
-   一個「內容」有兩種：
-     type:"note" → 一段文字（筆記）
-     type:"lab"  → 一個虛擬實驗（用 src 指住你個 lab.html）
+   ┌── 科目內容（items）──
+   │  type:"note" → 一段文字（筆記）
+   │  type:"lab"  → 一個虛擬實驗（用 src 指住你個 lab.html）
+   ├── 新聞（news）──
+   │  { date, title, body }
+   ├── 測驗（quizzes）──
+   │  { subject, title, questions:[{ q, options:[...], answer: 0, explain }] }
+   │  answer 係正確答案嘅位置：0 = 第一個，1 = 第二個…
+   └── 小測（quick）──
+      { q, options:[...], answer, explain }
 */
 const DATA = {
   name: "我嘅學習平台",
   tagline: "一句話介紹你個平台",
 
+  /* ── 科目 ── */
   subjects: [
     {
       id: "sci", emoji: "🔬", name: "科學", desc: "實驗、觀察、思考",
@@ -239,13 +311,71 @@ const DATA = {
     {
       id: "math", emoji: "📐", name: "數學", desc: "數字同圖形",
       items: [
-        { type:"note", title:"第一課", body:"喺呢度寫你嘅筆記。" }
+        { type:"note", title:"密度同比例", body:"密度 = 質量 ÷ 體積。單位係 g/cm³。" }
       ]
     },
     {
       id: "hist", emoji: "🏛️", name: "歷史", desc: "以前發生咩事",
       items: []
     }
+  ],
+
+  /* ── 新聞區 ── */
+  news: [
+    { date:"2026-09-23", title:"平台正式開張",
+      body:"呢個係我第一個自己做嘅學習平台。之後我會陸續加科目、加新聞、加測驗。" },
+    { date:"2026-09-20", title:"加咗虛擬實驗",
+      body:"拉一拉滑桿就會見到密度點變。你可以試下唔同質量同體積。" },
+    { date:"2026-09-15", title:"點解我想做呢個平台",
+      body:"因為課本嘅嘢太散，我想有個地方可以集中睇筆記同做練習。" }
+  ],
+
+  /* ── 測驗區（做完交卷，計分）── */
+  quizzes: [
+    {
+      subject:"科學", title:"密度基礎測驗",
+      questions:[
+        { q:"密度嘅公式係咩？",
+          options:["質量 ÷ 體積", "體積 ÷ 質量", "質量 × 體積"],
+          answer:0, explain:"密度 = 質量 ÷ 體積，單位係 g/cm³。" },
+        { q:"一件物件密度 0.8 g/cm³，放落水會點？",
+          options:["沉", "浮", "唔動"],
+          answer:1, explain:"水嘅密度係 1.0 g/cm³。比水輕就會浮。" },
+        { q:"同一件物件，我切走一半。密度會點變？",
+          options:["變一半", "唔變", "變兩倍"],
+          answer:1, explain:"質量同體積都少一半，相除之後密度一樣。" }
+      ]
+    },
+    {
+      subject:"數學", title:"比例小測驗",
+      questions:[
+        { q:"2 : 4 等於下面邊一個？",
+          options:["1 : 2", "2 : 3", "4 : 2"],
+          answer:0, explain:"兩邊同時除以 2，就係 1 : 2。" },
+        { q:"如果 3 個蘋果要 12 元，5 個要幾錢？",
+          options:["15 元", "20 元", "24 元"],
+          answer:1, explain:"每個 4 元，所以 5 個係 20 元。" }
+      ]
+    }
+  ],
+
+  /* ── 小測區（一題一題，即時知對錯）── */
+  quick: [
+    { q:"水嘅密度大約係幾多 g/cm³？",
+      options:["0.5", "1.0", "2.0"], answer:1,
+      explain:"水嘅密度係 1.0 g/cm³，所以先可以用嚟做比較。" },
+    { q:"「假設」嘅下一步通常係咩？",
+      options:["寫結論", "做實驗", "公佈結果"], answer:1,
+      explain:"觀察 → 假設 → 實驗 → 結論。" },
+    { q:"1 : 3 等同 4 : ?",
+      options:["12", "7", "9"], answer:0,
+      explain:"1 變 4 係乘 4，所以 3 都要乘 4 = 12。" },
+    { q:"密度單位 g/cm³ 入面，cm³ 係量度咩？",
+      options:["質量", "體積", "溫度"], answer:1,
+      explain:"cm³ 係體積（立方厘米）。" },
+    { q:"一件物件密度大過水，切一半之後仲會唔會沉？",
+      options:["會", "唔會", "要睇切幾多"], answer:0,
+      explain:"切一半之後密度唔變，所以照樣沉。" }
   ]
 };
 
@@ -254,64 +384,99 @@ const DATA = {
    ║ 呢段負責「撳掣 → 換畫面」。全部平台都係咁運作。               ║
    ╚══════════════════════════════════════════════════════════════╝ */
 
-var current = { view: 'home', subject: null, index: 0 };
+/* 而家喺邊、答咗咩，全部記喺呢度 */
+var S = {
+  view:'home', subject:null, index:0,
+  newsId:null, quizId:null, answers:{}, done:false,
+  qi:0, picked:null, right:0
+};
+var KEYS = ['A','B','C','D','E'];
 
 function esc(s){
   return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
     return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];
   });
 }
-function subjectById(id){
-  for (var i = 0; i < DATA.subjects.length; i++)
+function subj(id){
+  for (var i=0;i<DATA.subjects.length;i++)
     if (DATA.subjects[i].id === id) return DATA.subjects[i];
   return null;
 }
+function find(arr, id, key){
+  for (var i=0;i<arr.length;i++) if (arr[i][key] === id) return arr[i];
+  return null;
+}
 
-/* ── 換頁 ── */
-function go(view, subjectId, index){
-  current = { view: view, subject: subjectId || null, index: index || 0 };
+/* ── 換頁：全部撳掣都係叫呢個 ── */
+function go(view, a, b){
+  S.view = view;
+  if (view === 'subject') { S.subject = a; }
+  else if (view === 'item') { S.subject = a; S.index = b; }
+  else if (view === 'newsItem') { S.newsId = a; }
+  else if (view === 'quiz') { S.quizId = a; S.answers = {}; S.done = false; }
+  else if (view === 'quick') { S.qi = 0; S.picked = null; S.right = 0; }
+
   var v = document.getElementById('view');
-  v.innerHTML = view === 'subject' ? renderSubject(subjectId)
-              : view === 'item'    ? renderItem(subjectId, index)
-              :                      renderHome();
-  // 重新播入場動畫
+  v.innerHTML = ({
+    home: renderHome, subject: renderSubject, item: renderItem,
+    news: renderNews, newsItem: renderNewsItem,
+    quizList: renderQuizList, quiz: renderQuiz,
+    quick: renderQuick
+  })[view]();
   v.classList.remove('page'); void v.offsetWidth; v.classList.add('page');
   renderSidebar();
   closeDrawer();
   window.scrollTo(0, 0);
 }
 
+/* 答完題但唔想跳頂（唔想失去位置）時用 */
+function refresh(){
+  var v = document.getElementById('view');
+  v.innerHTML = ({ quiz: renderQuiz, quick: renderQuick })[S.view]();
+  renderSidebar();
+}
+
 /* ── 首頁 ── */
 function renderHome(){
+  var n = DATA.news ? DATA.news.length : 0;
+  var q = DATA.quizzes ? DATA.quizzes.length : 0;
   var h = '<h1>' + esc(DATA.name) + '</h1>'
         + '<p class="lead">' + esc(DATA.tagline) + '</p>'
-        + '<h2>揀一科開始</h2>';
+        + '<h2>科目</h2>';
   DATA.subjects.forEach(function(s){
-    var n = s.items ? s.items.length : 0;
+    var c = s.items ? s.items.length : 0;
     h += '<button class="card" onclick="go(\'subject\',\'' + esc(s.id) + '\')">'
        +   '<span class="emoji">' + esc(s.emoji) + '</span>'
-       +   '<span class="txt"><span class="t">' + esc(s.name) + '</span><br>'
-       +     '<span class="d">' + esc(s.desc || '') + '　·　' + n + ' 項內容</span></span>'
+       +   '<span class="txt"><span class="t">' + esc(s.name) + '</span>'
+       +     '<span class="d">' + esc(s.desc || '') + '　·　' + c + ' 項內容</span></span>'
        +   '<span class="arrow">›</span></button>';
   });
+  h += '<h2>其他</h2>'
+     + '<button class="card" onclick="go(\'news\')">'
+     +   '<span class="emoji">📰</span><span class="txt"><span class="t">新聞區</span>'
+     +   '<span class="d">' + n + ' 則消息</span></span><span class="arrow">›</span></button>'
+     + '<button class="card" onclick="go(\'quizList\')">'
+     +   '<span class="emoji">📝</span><span class="txt"><span class="t">測驗區</span>'
+     +   '<span class="d">' + q + ' 份測驗，做完計分</span></span><span class="arrow">›</span></button>'
+     + '<button class="card" onclick="go(\'quick\')">'
+     +   '<span class="emoji">⚡</span><span class="txt"><span class="t">小測區</span>'
+     +   '<span class="d">快問快答，即時知對錯</span></span><span class="arrow">›</span></button>';
   return h;
 }
 
 /* ── 科目頁 ── */
 function renderSubject(id){
-  var s = subjectById(id);
+  var s = subj(id);
   if (!s) return '<div class="empty">搵唔到呢個科目</div>';
-  var h = '<div class="crumb">'
-        +   '<button class="backlink" onclick="go(\'home\')">← 返首頁</button></div>'
+  var h = '<div class="crumb"><button class="backlink" onclick="go(\'home\')">← 返首頁</button></div>'
         + '<h1>' + esc(s.emoji) + ' ' + esc(s.name) + '</h1>'
         + '<p class="lead">' + esc(s.desc || '') + '</p>';
-  if (!s.items || !s.items.length)
-    return h + '<div class="empty">呢科暫時未有內容</div>';
+  if (!s.items || !s.items.length) return h + '<div class="empty">呢科暫時未有內容</div>';
   h += '<h2>內容</h2>';
   s.items.forEach(function(it, i){
     var badge = it.type === 'lab' ? '🧪 虛擬實驗' : '📝 筆記';
     h += '<button class="card" onclick="go(\'item\',\'' + esc(s.id) + '\',' + i + ')">'
-       +   '<span class="txt"><span class="t">' + esc(it.title) + '</span><br>'
+       +   '<span class="txt"><span class="t">' + esc(it.title) + '</span>'
        +     '<span class="d">' + badge + '</span></span>'
        +   '<span class="arrow">›</span></button>';
   });
@@ -320,36 +485,210 @@ function renderSubject(id){
 
 /* ── 內容頁 ── */
 function renderItem(id, index){
-  var s = subjectById(id);
+  var s = subj(id);
   if (!s || !s.items || !s.items[index]) return '<div class="empty">搵唔到</div>';
   var it = s.items[index];
   var h = '<div class="crumb"><button class="backlink" onclick="go(\'subject\',\''
         + esc(s.id) + '\')">← 返' + esc(s.name) + '</button></div>'
         + '<h1>' + esc(it.title) + '</h1><p class="lead">　</p>';
-
   if (it.type === 'lab'){
     h += '<div class="box"><div class="label">虛擬實驗</div>'
        +   '<iframe class="lab" src="' + esc(it.src) + '" title="' + esc(it.title) + '"></iframe>'
        +   '<p class="note-hint">睇唔到？確認 <b>' + esc(it.src)
        +   '</b> 同 index.html 放喺同一個資料夾。</p></div>';
   } else {
-    h += '<div class="box"><div class="label">筆記</div>'
-       +   '<p>' + esc(it.body) + '</p></div>';
+    h += '<div class="box"><div class="label">筆記</div><p>' + esc(it.body) + '</p></div>';
+  }
+  return h;
+}
+
+/* ── 新聞區 ── */
+function renderNews(){
+  var n = DATA.news || [];
+  var h = '<h1>📰 新聞區</h1><p class="lead">平台同學習上嘅消息</p>';
+  if (!n.length) return h + '<div class="empty">暫時未有消息</div>';
+  n.forEach(function(it, i){
+    h += '<button class="news-item" onclick="go(\'newsItem\',' + i + ')">'
+       +   '<span class="date">' + esc(it.date) + '</span>'
+       +   '<div class="nt">' + esc(it.title) + '</div>'
+       +   '<div class="nb">' + esc(it.body) + '</div>'
+       + '</button>';
+  });
+  return h;
+}
+function renderNewsItem(i){
+  var it = (DATA.news || [])[i];
+  if (!it) return '<div class="empty">搵唔到</div>';
+  return '<div class="crumb"><button class="backlink" onclick="go(\'news\')">← 返新聞區</button></div>'
+       + '<p class="date">' + esc(it.date) + '</p>'
+       + '<h1>' + esc(it.title) + '</h1><p class="lead">　</p>'
+       + '<div class="box"><p>' + esc(it.body) + '</p></div>';
+}
+
+/* ── 測驗區：列表 ── */
+function renderQuizList(){
+  var qs = DATA.quizzes || [];
+  var h = '<h1>📝 測驗區</h1><p class="lead">做完撳交卷，會計分同逐題話你知對錯</p>';
+  if (!qs.length) return h + '<div class="empty">暫時未有測驗</div>';
+  qs.forEach(function(q, i){
+    var c = q.questions ? q.questions.length : 0;
+    h += '<button class="card" onclick="go(\'quiz\',' + i + ')">'
+       +   '<span class="emoji">📝</span>'
+       +   '<span class="txt"><span class="t">' + esc(q.title) + '</span>'
+       +     '<span class="d">' + esc(q.subject || '') + '　·　' + c + ' 題</span></span>'
+       +   '<span class="arrow">›</span></button>';
+  });
+  return h;
+}
+
+/* ── 測驗區：做卷 ── */
+function pickQ(qi, oi){
+  if (S.done) return;
+  S.answers[qi] = oi;
+  refresh();
+}
+function submitQuiz(){
+  S.done = true;
+  refresh();
+  document.getElementById('quizTop').scrollIntoView({block:'start'});
+}
+function retryQuiz(){
+  S.answers = {}; S.done = false;
+  refresh();
+  window.scrollTo(0, 0);
+}
+function renderQuiz(){
+  var qz = (DATA.quizzes || [])[S.quizId];
+  if (!qz) return '<div class="empty">搵唔到呢份測驗</div>';
+  var qs = qz.questions || [];
+  var answered = 0, right = 0;
+  qs.forEach(function(q, i){
+    if (S.answers[i] !== undefined) answered++;
+    if (S.answers[i] === q.answer) right++;
+  });
+
+  var h = '<div id="quizTop"></div>'
+        + '<div class="crumb"><button class="backlink" onclick="go(\'quizList\')">← 返測驗區</button></div>'
+        + '<h1>' + esc(qz.title) + '</h1>'
+        + '<p class="lead">' + esc(qz.subject || '') + '　·　' + qs.length + ' 題</p>';
+
+  if (S.done){
+    var pct = qs.length ? Math.round(right / qs.length * 100) : 0;
+    h += '<div class="score"><div class="big">' + right + ' / ' + qs.length + '</div>'
+       +   '<div class="sub">' + pct + ' 分。' +
+           (pct === 100 ? '全部正確！🎉' : pct >= 60 ? '幾好，睇下答錯嗰啲。' : '再試一次會好啲。')
+       +   '</div></div>';
+  } else {
+    h += '<p class="progress">已經答咗 ' + answered + ' / ' + qs.length + ' 題</p>';
+  }
+
+  qs.forEach(function(q, qi){
+    h += '<div class="q"><div class="qh"><span class="n">' + (qi+1) + '</span>' + esc(q.q) + '</div>';
+    (q.options || []).forEach(function(o, oi){
+      var cls = 'opt', dis = '';
+      if (S.done){
+        dis = ' disabled';
+        if (oi === q.answer) cls += ' right';
+        else if (S.answers[qi] === oi) cls += ' wrong';
+      } else if (S.answers[qi] === oi){
+        cls += ' sel';
+      }
+      h += '<button class="' + cls + '"' + dis
+         + (S.done ? '' : ' onclick="pickQ(' + qi + ',' + oi + ')"') + '>'
+         +   '<span class="k">' + KEYS[oi] + '</span>' + esc(o) + '</button>';
+    });
+    if (S.done){
+      var good = S.answers[qi] === q.answer;
+      h += '<div class="fb ' + (good ? 'ok' : 'no') + '">'
+         + (good ? '✅ 答對。' : '❌ 正確答案：' + KEYS[q.answer] + '。')
+         + esc(q.explain || '') + '</div>';
+    }
+    h += '</div>';
+  });
+
+  if (!S.done){
+    var all = answered === qs.length && qs.length > 0;
+    h += '<div class="btnrow"><button class="btn"'
+       + (all ? ' onclick="submitQuiz()"' : ' disabled') + '>'
+       + (all ? '交卷睇分' : '答齊 ' + qs.length + ' 題才可以交卷') + '</button></div>';
+  } else {
+    h += '<div class="btnrow"><button class="btn ghost" onclick="retryQuiz()">再做一次</button>'
+       +   '<button class="btn" onclick="go(\'quizList\')">返測驗區</button></div>';
+  }
+  return h;
+}
+
+/* ── 小測區 ── */
+function quickPick(oi){
+  if (S.picked !== null) return;
+  S.picked = oi;
+  if (oi === DATA.quick[S.qi].answer) S.right++;
+  refresh();
+}
+function quickNext(){
+  S.qi++; S.picked = null;
+  if (S.qi >= (DATA.quick || []).length){
+    S.qi = 0; S.picked = null;
+    var v = document.getElementById('view');
+    v.innerHTML = '<h1>⚡ 小測完成</h1>'
+      + '<div class="score"><div class="big">' + S.right + '</div>'
+      + '<div class="sub">答啱 ' + S.right + ' 題。叻仔！</div></div>'
+      + '<div class="btnrow"><button class="btn" onclick="go(\'quick\')">再玩一次</button>'
+      + '<button class="btn ghost" onclick="go(\'home\')">返首頁</button></div>';
+    v.classList.remove('page'); void v.offsetWidth; v.classList.add('page');
+    renderSidebar();
+    window.scrollTo(0, 0);
+    S.right = 0;
+    return;
+  }
+  refresh();
+  window.scrollTo(0, 0);
+}
+function renderQuick(){
+  var list = DATA.quick || [];
+  if (!list.length) return '<h1>⚡ 小測區</h1><div class="empty">暫時未有題目</div>';
+  var q = list[S.qi];
+  var h = '<div class="crumb"><button class="backlink" onclick="go(\'home\')">← 返首頁</button></div>'
+        + '<h1>⚡ 小測區</h1>'
+        + '<p class="progress">第 ' + (S.qi+1) + ' / ' + list.length + ' 題　·　答啱 '
+        + S.right + ' 題</p>'
+        + '<div class="q"><div class="qh">' + esc(q.q) + '</div>';
+  (q.options || []).forEach(function(o, oi){
+    var cls = 'opt', dis = '';
+    if (S.picked !== null){
+      dis = ' disabled';
+      if (oi === q.answer) cls += ' right';
+      else if (S.picked === oi) cls += ' wrong';
+    }
+    h += '<button class="' + cls + '"' + dis
+       + (S.picked === null ? '' : '') 
+       + (S.picked === null ? ' onclick="quickPick(' + oi + ')"' : '') + '>'
+       +   '<span class="k">' + KEYS[oi] + '</span>' + esc(o) + '</button>';
+  });
+  h += '</div>';
+  if (S.picked !== null){
+    var good = S.picked === q.answer;
+    h += '<div class="fb ' + (good ? 'ok' : 'no') + '">'
+       + (good ? '✅ 答對！' : '❌ 答錯，正確係 ' + KEYS[q.answer] + '。')
+       + esc(q.explain || '') + '</div>'
+       + '<div class="btnrow"><button class="btn" onclick="quickNext()">'
+       + (S.qi + 1 >= list.length ? '睇成績' : '下一題 →') + '</button></div>';
   }
   return h;
 }
 
 /* ── 側欄（自動由 DATA 生成）── */
 function renderSidebar(){
-  var h = '<button class="sitem' + (current.view === 'home' ? ' on' : '')
+  var h = '<button class="sitem' + (S.view === 'home' ? ' on' : '')
         + '" onclick="go(\'home\')"><span class="ic">🏠</span>首頁</button>';
+
   DATA.subjects.forEach(function(s){
-    var on = current.subject === s.id;
+    var on = (S.view === 'subject' || S.view === 'item') && S.subject === s.id;
     h += '<button class="sitem' + (on ? ' on' : '') + '" onclick="go(\'subject\',\''
        + esc(s.id) + '\')"><span class="ic">' + esc(s.emoji) + '</span>' + esc(s.name) + '</button>';
     if (on && s.items){
       s.items.forEach(function(it, i){
-        var ion = current.view === 'item' && current.index === i;
+        var ion = S.view === 'item' && S.index === i;
         h += '<button class="sitem child' + (ion ? ' on' : '')
            + '" onclick="go(\'item\',\'' + esc(s.id) + '\',' + i + ')">'
            + esc(it.title) + '</button>';
@@ -357,19 +696,28 @@ function renderSidebar(){
       if (!s.items.length) h += '<div class="none">（未有內容）</div>';
     }
   });
+
+  h += '<div class="divider"></div>'
+     + '<button class="sitem' + (S.view === 'news' || S.view === 'newsItem' ? ' on' : '')
+     + '" onclick="go(\'news\')"><span class="ic">📰</span>新聞區</button>'
+     + '<button class="sitem' + (S.view === 'quizList' || S.view === 'quiz' ? ' on' : '')
+     + '" onclick="go(\'quizList\')"><span class="ic">📝</span>測驗區</button>'
+     + '<button class="sitem' + (S.view === 'quick' ? ' on' : '')
+     + '" onclick="go(\'quick\')"><span class="ic">⚡</span>小測區</button>';
+
   document.getElementById('sideList').innerHTML = h;
 }
 
 /* ── 手機抽屜 ── */
 var MOBILE = window.matchMedia('(max-width: 767px)');
 function closeDrawer(){
-  var a = document.getElementById('sidebar'), b = document.getElementById('backdrop');
-  a.classList.remove('open'); b.hidden = true;
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('backdrop').hidden = true;
   document.body.classList.remove('locked');
 }
 document.getElementById('menuBtn').addEventListener('click', function(){
+  if (!MOBILE.matches) return;
   var a = document.getElementById('sidebar'), b = document.getElementById('backdrop');
-  if (!MOBILE.matches){ a.scrollTop = a.scrollTop; return; }  // 桌面唔使抽屜
   var open = !a.classList.contains('open');
   a.classList.toggle('open', open);
   b.hidden = !open;
