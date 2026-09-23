@@ -108,6 +108,20 @@ tbody td:last-child{border-top:0; border-radius:0 13px 13px 0}
   display:inline-block; font-size:11px; font-weight:700; padding:1px 7px;
   border-radius:5px; background:#E0E7FF; color:#3730A3; margin-right:5px;
 }
+/* ── 起手檔下載卡 ── */
+.starter{
+  display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  background:#fff; border:2px solid #0F172A; border-radius:14px;
+  padding:16px 18px; margin:0 0 22px;
+}
+.starter .st-l{flex:1; min-width:210px}
+.starter .st-t{font-weight:700; font-size:16.5px}
+.starter .st-d{font-size:13.5px; color:var(--muted); margin-top:3px}
+.starter .st-b{
+  flex:0 0 auto; background:#0F172A; color:#fff; text-decoration:none;
+  font-weight:700; font-size:15px; padding:11px 20px; border-radius:10px;
+}
+.starter .st-b:hover{background:#1F2937}
 @media(max-width:680px){
   thead{display:none}
   table,tbody,tr,td{display:block; width:100%}
@@ -148,6 +162,19 @@ footer{text-align:center; color:var(--muted); font-size:12.5px; padding:20px 16p
     <button class="errbtn" data-err="0">🆘 有問題？</button>
   </div>
   <div class="errpanel" hidden></div>
+
+  <div class="starter">
+    <div class="st-l">
+      <div class="st-t">📦 起手檔（下載）</div>
+      <div class="st-d">
+        解壓之後有個 <b>my-platform</b> 資料夾，入面係
+        <b>index.html</b>（平台本體）＋ <b>lab.html</b>（範例實驗）。
+        用 Cursor 開呢個資料夾就開始得。
+      </div>
+    </div>
+    <a class="st-b" href="./my-platform.zip" download>⬇ 下載 ZIP</a>
+  </div>
+
   <table>
     <thead><tr><th style="width:26%">做咩</th><th style="width:44%">Prompt</th></tr></thead>
     <tbody>
