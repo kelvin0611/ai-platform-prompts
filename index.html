@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prompt 表格 · AI 學習平台</title>
+<style>
+:root{
+  --b50:#F5FAFC; --b100:#E7F4F9; --b200:#CBE8F2; --b300:#A5D7E8;
+  --b400:#77C3DD; --b500:#51B2D3; --b600:#459DBB; --b700:#3987A3;
+  --b800:#2C7088; --b900:#1F586C; --b950:#144557;
+  --ink:#0f172a; --muted:#64748b; --line:#CBE8F2;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--b50); color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang HK","Noto Sans TC",sans-serif;
+  font-size:16px; line-height:1.7; -webkit-text-size-adjust:100%;
+}
+header{
+  background:var(--b950); color:#fff; padding:20px 18px 0;
+  position:sticky; top:0; z-index:10;
+}
+header h1{margin:0; font-size:20px; letter-spacing:-.2px}
+header p{margin:3px 0 0; font-size:13px; opacity:.75}
+nav{display:flex; gap:7px; overflow-x:auto; padding:12px 0 12px;
+    -webkit-overflow-scrolling:touch}
+nav button{
+  flex:0 0 auto; border:0; background:rgba(255,255,255,.16); color:#fff;
+  padding:7px 14px; border-radius:999px; font-family:inherit;
+  font-size:13.5px; font-weight:600; cursor:pointer;
+}
+nav button.on{background:var(--b500); color:#04212c}
+main{max-width:900px; margin:0 auto; padding:22px 16px 90px}
+section{display:none}
+section.on{display:block}
+h2{font-size:23px; margin:4px 0 2px}
+.sub{color:var(--muted); font-size:14.5px; margin:0 0 20px}
+
+/* ── 表格 ── */
+table{width:100%; border-collapse:separate; border-spacing:0 10px}
+thead th{
+  text-align:left; font-size:11px; letter-spacing:1.3px; text-transform:uppercase;
+  color:var(--b700); font-weight:700; padding:0 12px 2px;
+}
+tbody tr{background:#fff; box-shadow:0 0 0 1px var(--line); border-radius:13px}
+tbody td{padding:15px 14px; vertical-align:top; border-top:1px solid var(--line)}
+tbody td:first-child{border-top:0; border-radius:13px 0 0 13px}
+tbody td:last-child{border-top:0; border-radius:0 13px 13px 0}
+.fname{font-weight:700; font-size:15px}
+.fdesc{font-size:13px; color:var(--muted); margin-top:3px}
+.prompt{
+  background:var(--b950); color:var(--b100); border-radius:9px;
+  padding:12px 13px; font-family:ui-monospace,SFMono-Regular,Menlo,monospace;
+  font-size:13px; line-height:1.65; white-space:pre-wrap; word-break:break-word;
+  margin:0;
+}
+.copy{
+  border:0; background:var(--b500); color:#04212c; font-family:inherit;
+  font-weight:700; font-size:13.5px; padding:8px 15px; border-radius:8px;
+  cursor:pointer; margin-top:9px;
+}
+.copy.done{background:#059669; color:#fff}
+.why{
+  font-size:12.5px; color:var(--b800); background:var(--b100);
+  border-radius:8px; padding:8px 10px; margin-top:9px;
+}
+.why b{color:var(--b950)}
+@media(max-width:680px){
+  /* 手機：表格變卡 */
+  thead{display:none}
+  table,tbody,tr,td{display:block; width:100%}
+  tbody tr{margin-bottom:14px; box-shadow:0 0 0 1px var(--line); border-radius:13px; overflow:hidden}
+  tbody td{border-top:0; border-bottom:1px solid var(--line); padding:13px 14px}
+  tbody td:last-child{border-bottom:0}
+  tbody td:first-child{border-radius:0}
+  tbody td::before{
+    content:attr(data-l); display:block; font-size:10.5px; letter-spacing:1.2px;
+    text-transform:uppercase; color:var(--b700); font-weight:700; margin-bottom:5px;
+  }
+  .prompt{font-size:12.5px}
+}
+footer{text-align:center; color:var(--muted); font-size:12.5px; padding:20px 16px 40px}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Prompt 表格</h1>
+  <p>撳「複製」→ 貼落 Cursor → Enter</p>
+  <nav id="tabs"></nav>
+</header>
+
+<main>
+
+<!-- ══════ 通用 ══════ -->
+<section data-k="0">
+  <h2>通用 Prompt</h2>
+  <p class="sub">唔係某一堂專用 —— 任何時候都用得。**先理解，後動手**。</p>
+
+  <h3 style="font-size:15px;color:var(--b700);letter-spacing:1.2px;margin:22px 0 0">🟦 理解類</h3>
+  <table>
+    <thead><tr><th style="width:26%">咩事用</th><th style="width:44%">Prompt</th></tr></thead>
+    <tbody>
+      <tr>
+        <td data-l="咩事用"><div class="fname">唔明任何概念</div>
+          <div class="fdesc">開頭用，唔使做嘢</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g1">我完全冇學過程式。用 3 句話我知 <概念> 係咩。
+用一個香港中學生明嘅比喻。唔好講功能清單。</pre>
+          <button class="copy" data-t="g1">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="咩事用"><div class="fname">睇唔明佢做咗咩</div>
+          <div class="fdesc">佢寫完，你唔知發生咩事</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g2">我睇唔明你頭先做咗咩。
+
+用一個生活比喻講一次；
+再列出你改咗嘅 3 個最重要嘅位，每個一句。
+唔好重寫 code。</pre>
+          <button class="copy" data-t="g2">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="咩事用"><div class="fname">想知有咩做法</div>
+          <div class="fdesc">未決定點做之前</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g3">先唔好寫 code。
+用 3 句話我知有邊幾種做法，各自好處同壞處。用一個生活例子。</pre>
+          <button class="copy" data-t="g3">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="咩事用"><div class="fname">想驗自己明唔明</div>
+          <div class="fdesc">講一次畀 AI 聽</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g4">我而家要用自己嘅話講一次你教我嘅嘢：「<你講一次>」。
+我講得有冇錯？有錯就糾正我，唔好長篇。</pre>
+          <button class="copy" data-t="g4">複製</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:15px;color:var(--b700);letter-spacing:1.2px;margin:26px 0 0">🟩 動手類</h3>
+  <table>
+    <thead><tr><th style="width:26%">咩事用</th><th style="width:44%">Prompt</th></tr></thead>
+    <tbody>
+      <tr>
+        <td data-l="咩事用"><div class="fname">做一樣新嘢</div>
+          <div class="fdesc">由零開始叫佢做</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g5">我想要一個 <咩>，係畀 <邊個> 用嘅。
+
+要有：
+1. <功能一>
+2. <功能二>
+
+設計：<風格>。
+唔要：<唔要嘅嘢>。
+只用一個 index.html 檔。
+做完用 5 句解釋你加咗咩。</pre>
+          <button class="copy" data-t="g5">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="咩事用"><div class="fname">改一個位</div>
+          <div class="fdesc">最常用。一次只改一樣</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g6">而家 <邊個位> 唔好，我希望 <變成點>。
+只改呢部分，其他唔好郁。改完話我知你改咗邊一行。</pre>
+          <button class="copy" data-t="g6">複製</button>
+          <div class="why"><b>點解要咁講</b>：你唔講「其他唔好郁」，佢好可能會順手改埋其他嘢。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="咩事用"><div class="fname">加新功能</div>
+          <div class="fdesc">喺現有嘅嘢上面加</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g7">加一個 <功能>。
+
+<具體描述你想要咩>
+
+只加呢樣，其他唔好郁。</pre>
+          <button class="copy" data-t="g7">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="咩事用"><div class="fname">佢話做唔到</div>
+          <div class="fdesc">唔好就咁放棄</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g8">你話做唔到。
+畀我一個做得到嘅簡單版本，並話我知犧牲咗咩。</pre>
+          <button class="copy" data-t="g8">複製</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:15px;color:var(--b700);letter-spacing:1.2px;margin:26px 0 0">🟥 保命類（出事用）</h3>
+  <table>
+    <thead><tr><th style="width:26%">咩事用</th><th style="width:44%">Prompt</th></tr></thead>
+    <tbody>
+      <tr>
+        <td data-l="咩事用"><div class="fname">壞咗 ⭐ 最重要</div>
+          <div class="fdesc">唔好即刻叫佢改，叫佢先諗</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g9">我撳咗 <X>，出咗 <Y>，但我想要 <Z>。
+
+先唔好改 code。先用 3 句講你估係咩原因，同埋你點知。
+我確認之後你才改。</pre>
+          <button class="copy" data-t="g9">複製</button>
+          <div class="why"><b>點解咁重要</b>：咁你就知佢係唔係亂估。全個課程最值錢嘅一句。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="咩事用"><div class="fname">改完之後壞咗</div>
+          <div class="fdesc">想返轉頭</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g10">你頭先改完之後壞咗。
+還原返上一個版本，然後話我知你上次改咗咩。</pre>
+          <button class="copy" data-t="g10">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="咩事用"><div class="fname">佢改咗冇叫佢改嘅嘢</div>
+          <div class="fdesc">失控嘅時候</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g11">你改咗我冇叫你改嘅嘢。
+只改我講嗰個位，其他還原。</pre>
+          <button class="copy" data-t="g11">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="咩事用"><div class="fname">亂晒</div>
+          <div class="fdesc">唔知發生咩事</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g12">而家好亂。
+
+用 5 句話我知而家個檔案有咩、邊度有問題。
+唔好改任何嘢。</pre>
+          <button class="copy" data-t="g12">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="咩事用"><div class="fname">進度落後</div>
+          <div class="fdesc">唔夠時間</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g13">我進度落後。
+幫我揀出最重要嘅一個功能，其他全部暫時唔要。只留呢個。</pre>
+          <button class="copy" data-t="g13">複製</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══════ 堂 1 ══════ -->
+<section data-k="1">
+  <h2>堂 1 · 出第一件作品</h2>
+  <p class="sub">做一個虛擬實驗，放上導師嘅平台。</p>
+  <table>
+    <thead><tr><th style="width:26%">功能</th><th style="width:44%">Prompt</th></tr></thead>
+    <tbody>
+      <tr>
+        <td data-l="功能"><div class="fname">先明白 Cursor</div>
+          <div class="fdesc">做之前，問一次</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="a1">我完全冇學過程式。用 3 句話我知：
+Cursor 係咩？佢同 ChatGPT 有咩分別？
+唔好講功能清單，用一個比喻。</pre>
+          <button class="copy" data-t="a1">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">做虛擬實驗</div>
+          <div class="fdesc">你嘅第一件作品</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="a2">我想要一個網頁，係一個虛擬實驗，主題係 <你嘅主題>。
+
+要有：
+1. 一個標題，寫清楚做咩實驗
+2. 一個可以拉嘅滑桿，改變一個數值
+3. 一個即時更新嘅結果（數字或者圖）
+4. 一句話解釋「點解會有呢個結果」
+
+設計：大字、顏色清楚、電話睇都要清楚。
+唔要：唔要登入、唔要後端、唔要廣告。
+只用一個 index.html 檔。
+
+做完之後，用 5 句解釋你加咗咩。</pre>
+          <button class="copy" data-t="a2">複製</button>
+          <div class="why"><b>入面有咩學問</b>：講「畀邊個用」+「要有咩」+「唔要咩」+「用咩檔」= 一條好嘅需求。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">改一個位</div>
+          <div class="fdesc">執靚佢</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="a3">而家 <邊個位> 唔好，我希望 <變成點>。
+只改呢部分，其他唔好郁。</pre>
+          <button class="copy" data-t="a3">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">加一個自己嘅位</div>
+          <div class="fdesc">唔止照做</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="a4">我想加 <你自己想嘅嘢>。
+
+畀我 3 個做法，每個寫：做法、好處、難度（易／中／難）。
+我想揀一個「易」嘅。</pre>
+          <button class="copy" data-t="a4">複製</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══════ 堂 2 ══════ -->
+<section data-k="2">
+  <h2>堂 2 · 你個平台出世</h2>
+  <p class="sub">骨架已經有齊。<b>你要做嘅係令佢變成「你嘅」</b> —— 改資料，再加一個功能。</p>
+  <table>
+    <thead><tr><th style="width:26%">功能</th><th style="width:44%">Prompt</th></tr></thead>
+    <tbody>
+      <tr>
+        <td data-l="功能"><div class="fname">先明白骨架點運作</div>
+          <div class="fdesc">做之前，問一次</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="b1">我有一個 index.html，係一個學習平台嘅骨架。
+入面分咗【資料區】同【引擎區】。
+
+用 3 句話我知：點解要分開？
+用一個生活比喻。唔好講 code。</pre>
+          <button class="copy" data-t="b1">複製</button>
+          <div class="why"><b>呢個係全課程最重要嘅概念</b>：改「資料」唔會搞壞「引擎」。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">① 改平台名</div>
+          <div class="fdesc">改【資料區】就得</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="b2">喺【資料區】入面：
+個平台由「我嘅學習平台」改做「<你嘅平台名>」，
+tagline 改做「<一句話介紹>」。
+
+只改【資料區】，唔好郁【引擎區】。</pre>
+          <button class="copy" data-t="b2">複製</button>
+          <div class="why"><b>留意</b>：改完頂部橫梁、側欄、瀏覽器 tab 全部一齊變 —— 因為佢哋都係讀同一份資料。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">② 換你嘅科目</div>
+          <div class="fdesc">3 個科目改成你嘅</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="b3">喺【資料區】入面，將 3 個科目改成我自己嘅：
+
+1. <科目一> emoji 用 <emoji>，描述：<一句>
+2. <科目二> emoji 用 <emoji>，描述：<一句>
+3. <科目三> emoji 用 <emoji>，描述：<一句>
+
+只改【資料區】。</pre>
+          <button class="copy" data-t="b3">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">③ 換配色</div>
+          <div class="fdesc">令佢唔似人哋嗰個</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="b4">我想換走主色 <原本色>，變成 <你想要嘅色>。
+
+只改最上面 :root 入面嘅色值，其他一律唔好郁。
+換完話我知你改咗邊幾行。如果咁樣會變醜，警告我。</pre>
+          <button class="copy" data-t="b4">複製</button>
+          <div class="why"><b>呢步學到</b>：改一個位（主色）全部嘢跟住變 —— 呢個叫「設計變數」。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">④ 加一個新功能</div>
+          <div class="fdesc">堂 2 嘅挑戰</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="b5">我想喺首頁加一個「最近更新」區，
+用細細張卡列出最新 3 項內容，撳得入去。
+
+只加呢樣，其他唔好郁。
+做完話我知你改咗邊幾行。</pre>
+          <button class="copy" data-t="b5">複製</button>
+          <div class="why"><b>提示</b>：如果佢問你「最新」點定義 —— 你就係要答嘅人。試下自己諗一個講法。</div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══════ 堂 3 ══════ -->
+<section data-k="3">
+  <h2>堂 3 · 放你自己嘅內容入去</h2>
+  <p class="sub">堂 1 造嘅實驗、自己寫嘅筆記 —— 全部放入你個平台。</p>
+  <table>
+    <thead><tr><th style="width:26%">功能</th><th style="width:44%">Prompt</th></tr></thead>
+    <tbody>
+      <tr>
+        <td data-l="功能"><div class="fname">先明白內容點存</div>
+          <div class="fdesc">做之前，問一次</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="c1">【資料區】入面每個內容都有 type，有 "note" 同 "lab"。
+
+用 3 句話我知：點解要有 type？
+如果我想加一種新 type，大概要改咩？</pre>
+          <button class="copy" data-t="c1">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">① 加一則筆記</div>
+          <div class="fdesc">自己寫嘅</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="c2">喺「<科目名>」入面加一則筆記：
+
+標題：<你嘅標題>
+內容：<你寫嘅一兩句>
+
+只改【資料區】。加完話我知我喺側欄邊度搵到佢。</pre>
+          <button class="copy" data-t="c2">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">② 加多一則</div>
+          <div class="fdesc">自己動手做多次</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="c3">再喺同一科加一則筆記：
+標題：<你嘅標題>
+內容：<你寫嘅內容>
+
+只改【資料區】。</pre>
+          <button class="copy" data-t="c3">複製</button>
+          <div class="why"><b>愈做愈快</b>：第二次你已經唔使問 AI 點做。呢個就係「上手」。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">③ 放入你嘅虛擬實驗</div>
+          <div class="fdesc">堂 1 造嗰個</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="c4">我堂 1 造咗一個虛擬實驗，我想放入「<科目名>」。
+
+我已經將佢改名做 lab.html，同 index.html 放喺同一個資料夾。
+【資料區】入面已經有一項 type:"lab"，src 係 "lab.html"。
+
+確認佢真係駁得通。
+如果 iframe 出唔到，話我知係咩原因（用 3 句）。</pre>
+          <button class="copy" data-t="c4">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">④ 內容頁加「相關內容」</div>
+          <div class="fdesc">堂 3 嘅挑戰</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="c5">內容頁最底加一個「同科其他內容」區，
+列出同一科其他項，撳得入去。
+目前睇緊嗰項唔好列出嚟。
+
+只加呢樣，其他唔好郁。</pre>
+          <button class="copy" data-t="c5">複製</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══════ 堂 4 ══════ -->
+<section data-k="4">
+  <h2>堂 4 · 你自己話事</h2>
+  <p class="sub">今日冇指定要做咩。<b>你揀</b>，然後你寫 prompt。</p>
+  <table>
+    <thead><tr><th style="width:26%">功能</th><th style="width:44%">Prompt</th></tr></thead>
+    <tbody>
+      <tr>
+        <td data-l="功能"><div class="fname">叫 AI 畀建議</div>
+          <div class="fdesc">唔知做咩好就用呢條</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="d1">我個學習平台而家有：首頁、側欄、科目頁、內容頁。
+
+畀我 5 個「中學生會覺得有用」嘅功能建議。
+每個寫：功能名、解決咩問題、難度（易／中／難）。
+只做得到「一個 HTML 檔內」嘅嘢。</pre>
+          <button class="copy" data-t="d1">複製</button>
+          <div class="why"><b>揀「易」</b>：做完一個易嘅，好過做唔完一個難嘅。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">做你揀嗰個</div>
+          <div class="fdesc">呢條要自己填</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="d2">加一個 <你揀嘅功能>。
+
+<用你自己嘅話描述：撳咩、會出咩、喺邊度出現>
+
+只加呢樣，其他唔好郁。
+做完話我知你改咗邊幾行。</pre>
+          <button class="copy" data-t="d2">複製</button>
+          <div class="why"><b>最緊要係中間嗰句</b>。你描述得越具體，佢做得越準。呢個就係「提出需求」。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">出去前先驗收</div>
+          <div class="fdesc">加完之後做</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="d3">你用 5 句話我知：你加嘅嘢應該點樣見到？
+包括要撳咩、應該出咩。
+
+然後列出你有可能搞壞嘅 2 個地方。</pre>
+          <button class="copy" data-t="d3">複製</button>
+          <div class="why"><b>為咩要問</b>：佢答完你就知去邊度試。唔試過唔算完成。</div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ══════ 堂 5 ══════ -->
+<section data-k="5">
+  <h2>堂 5 · 出街</h2>
+  <p class="sub">放上網，全世界都開得到。</p>
+  <table>
+    <thead><tr><th style="width:26%">功能</th><th style="width:44%">Prompt</th></tr></thead>
+    <tbody>
+      <tr>
+        <td data-l="功能"><div class="fname">交稿前自檢</div>
+          <div class="fdesc">做齊先交</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="e1">我準備交呢個平台出去。
+
+1. 用一個從未見過嘅人嘅角度，話我知有咩睇唔明
+2. 有冇邊個掣係撳咗冇反應
+3. 手機睇會唔會爛
+
+唔好改 code，只報告。</pre>
+          <button class="copy" data-t="e1">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">準備 demo 講稿</div>
+          <div class="fdesc">3 分鐘</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="e2">我嘅平台係 <你嘅平台名>，用嚟 <做咩>。
+
+幫我用 3 分鐘嘅講稿格式，答呢 3 條：
+① 邊個會用？用嚟做咩？
+② 邊個功能係我自己揀嘅？點解揀佢？
+③ 我撞到咩問題？我點叫 AI 幫我搞掂？
+
+要點列，唔好長篇。用廣東話。</pre>
+          <button class="copy" data-t="e2">複製</button>
+          <div class="why"><b>第 ③ 條最值錢</b>：唔係講成功，係講過程。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="功能"><div class="fname">交出街版</div>
+          <div class="fdesc">最後一步</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="e3">我需要交出一個「一個檔就開得到」嘅版本。
+
+如果我而家有幾個檔（index.html、lab.html），
+話我知我可以點做 —— 最少改動嘅方法。
+唔好真係改，先講方案。</pre>
+          <button class="copy" data-t="e3">複製</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+</main>
+
+<footer>Prompt 表格 · AI 學習平台課程 · 有問題問導師</footer>
+
+<script>
+(function(){
+  var LAB = {'0':'通用','1':'堂 1','2':'堂 2','3':'堂 3','4':'堂 4','5':'堂 5'};
+  var ORDER = ['0','1','2','3','4','5'];
+  var secs = Array.prototype.slice.call(document.querySelectorAll('section'));
+  var tabs = document.getElementById('tabs');
+
+  ORDER.forEach(function(k){
+    if (!secs.some(function(s){ return s.dataset.k === k; })) return;
+    var b = document.createElement('button');
+    b.textContent = LAB[k]; b.dataset.k = k;
+    tabs.appendChild(b);
+  });
+
+  function show(k){
+    secs.forEach(function(s){ s.classList.toggle('on', s.dataset.k === k); });
+    Array.prototype.forEach.call(tabs.children, function(b){
+      b.classList.toggle('on', b.dataset.k === k);
+    });
+    try { localStorage.setItem('prompttab', k); } catch(e){}
+    window.scrollTo(0, 0);
+  }
+
+  tabs.addEventListener('click', function(e){
+    var b = e.target.closest('button');
+    if (b) show(b.dataset.k);
+  });
+
+  var saved = null;
+  try { saved = localStorage.getItem('prompttab'); } catch(e){}
+  show(ORDER.indexOf(saved) >= 0 ? saved : '0');
+
+  // 複製
+  Array.prototype.forEach.call(document.querySelectorAll('.copy'), function(btn){
+    btn.addEventListener('click', function(){
+      var txt = document.getElementById(btn.dataset.t).textContent;
+      var done = function(){
+        var old = btn.textContent;
+        btn.classList.add('done'); btn.textContent = '✓ 已複製';
+        setTimeout(function(){ btn.classList.remove('done'); btn.textContent = old; }, 1500);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(txt).then(done, done);
+      } else {
+        var ta = document.createElement('textarea');
+        ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); } catch(e){}
+        document.body.removeChild(ta); done();
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
