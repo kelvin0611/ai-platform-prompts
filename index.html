@@ -242,6 +242,206 @@ Cursor 係咩？佢同 ChatGPT 有咩分別？
   </table>
 </section>
 
+<!-- ══════ 儲存 ══════ -->
+<section data-k="G">
+  <div class="sechead">
+    <div class="t1">
+      <h2>💾 儲存區 · 每堂都要做</h2>
+      <p class="sub">你下一堂可能用<b>另一部電腦</b>，所以每次落堂都要上傳。</p>
+    </div>
+    <button class="errbtn" data-err="G">🆘 有問題？</button>
+  </div>
+  <div class="errpanel" hidden></div>
+
+  <div class="why" style="font-size:14px;background:#FFFBEB;border-left:5px solid #B45309;padding:12px 15px;border-radius:8px">
+    <b>記住一句就夠：</b>開課 <b>攞返</b>，落堂 <b>上傳</b>。<br>
+    唔做嘅話，下一堂你會對住一部空空嘅電腦。
+  </div>
+
+  <h3 style="font-size:15px;color:var(--b700);letter-spacing:1.2px;margin:24px 0 0">🟦 先明白</h3>
+  <table>
+    <thead><tr><th style="width:26%">做咩</th><th style="width:44%">Prompt</th></tr></thead>
+    <tbody>
+      <tr>
+        <td data-l="做咩"><div class="fname">點解要放上 GitHub</div>
+          <div class="fdesc">第一次做之前</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g1">用 3 句話我知：點解要將我嘅 code 放上 GitHub？
+
+用一個比喻。唔好講技術名詞。
+（提示：我下一堂可能坐另一部電腦。）</pre>
+          <button class="copy" data-t="g1">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="做咩"><div class="fname">commit / push 係咩</div>
+          <div class="fdesc">唔明就問，唔好死背指令</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g2">用 3 句話我知：
+「儲存」同「上傳」有咩分別？commit 同 push 又係咩？
+
+用一個比喻（提示：好似寫日記同寄出去）。
+唔好講指令。</pre>
+          <button class="copy" data-t="g2">複製</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:15px;color:var(--b700);letter-spacing:1.2px;margin:26px 0 0">🟨 第一次（只做一次）</h3>
+  <table>
+    <thead><tr><th style="width:26%">做咩</th><th style="width:44%">Prompt</th></tr></thead>
+    <tbody>
+      <tr>
+        <td data-l="做咩"><div class="fname">① 裝 Git</div>
+          <div class="fdesc"><span class="win">Windows</span>未裝過用呢條</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g3">我係用 Windows，未裝過 Git。
+
+一步一步教我點裝：
+1. 去邊度下載（要撳咩）
+2. 裝嘅時候有咩要改（如果全部預設都得，話我知）
+3. 裝完之後，點確認真係裝好
+
+用中學生明嘅講法，唔好假設我識任何嘢。</pre>
+          <button class="copy" data-t="g3">複製</button>
+          <div class="why"><b>點解要裝</b>：Git 係幫你「打包同寄出去」嘅工具。Cursor 叫得佢做，但係你部電腦要先有佢。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="做咩"><div class="fname">② 開 GitHub 帳號 + repo</div>
+          <div class="fdesc">一人一個</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g4">我未有 GitHub 帳號。
+
+一步一步教我：
+1. 點註冊（用邊個 email 好）
+2. 點開一個新 repo
+3. 個 repo 叫咩名好（我個 project 係一個學習平台）
+4. 揀 public 定 private？分別係咩
+5. 開完之後我會見到咩
+
+用中學生明嘅講法。</pre>
+          <button class="copy" data-t="g4">複製</button>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="做咩"><div class="fname">③ 叫 AI 幫我連接 ＋ 第一次上傳</div>
+          <div class="fdesc">Cursor 幫你跑指令</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g5">我嘅 code 喺呢個資料夾：<資料夾路徑>
+我啱啱開咗一個 GitHub repo：<repo 網址>
+
+請你幫我：
+1. 喺呢個資料夾建立 git
+2. 連接去嗰個 repo
+3. 將所有檔上傳上去
+
+指令你幫我跑（或者一步一步話我知要打咩）。
+跑完話我知成功定失敗，同埋我點自己確認。</pre>
+          <button class="copy" data-t="g5">複製</button>
+          <div class="why"><b>留意最後一句</b>：「我點自己確認」—— 唔好淨係信佢講成功。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="做咩"><div class="fname">④ 確認真係上傳咗</div>
+          <div class="fdesc">唔好信「應該得」</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g6">我頭先叫你幫我上傳咗。
+
+教我點自己確認真係成功（唔係只係你話成功）：
+1. 我可以去邊度睇
+2. 應該見到咩
+3. 如果見到舊嘅版本，代表咩
+
+唔好改任何嘢。</pre>
+          <button class="copy" data-t="g6">複製</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:15px;color:var(--b700);letter-spacing:1.2px;margin:26px 0 0">🟩 每一堂（開課 ＋ 落堂）</h3>
+  <table>
+    <thead><tr><th style="width:26%">做咩</th><th style="width:44%">Prompt</th></tr></thead>
+    <tbody>
+      <tr>
+        <td data-l="做咩"><div class="fname">📥 開課：攞返上次嘅 code</div>
+          <div class="fdesc">換咗電腦就一定要做</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g7">我而家喺一部新嘅電腦（或者重裝過）。
+我上次嘅 code 放咗喺 GitHub：<repo 網址>
+
+一步一步教我點樣攞返所有檔落嚟：
+1. 要打咩指令、喺 Cursor 邊個位打
+2. 會存喺邊個資料夾
+3. 攞完之後點樣喺 Cursor 開嚟睇
+
+你幫我跑都得。跑完話我知我應該見到咩。</pre>
+          <button class="copy" data-t="g7">複製</button>
+          <div class="why"><b>如果係同一部電腦</b>：唔使重新 clone，叫 AI <code>git pull</code> 攞最新版本就得。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="做咩"><div class="fname">💾 落堂：儲存 ＋ 上傳</div>
+          <div class="fdesc">落堂前最後一件事</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g8">我要落堂喇，要將今日做嘅嘢全部存上 GitHub。
+
+請你幫我：
+1. 先列出今日改咗邊幾個檔（我想睇下先）
+2. 幫我寫一句 commit message（英文，一句為限）
+3. 上傳上去
+
+跑完話我知成功定失敗，同我點自己確認。</pre>
+          <button class="copy" data-t="g8">複製</button>
+          <div class="why"><b>為咩要「列畀我睇」</b>：你會知自己有冇唔小心改咗啲唔應該改嘅嘢。</div>
+        </td>
+      </tr>
+      <tr>
+        <td data-l="做咩"><div class="fname">🔄 同一部電腦，繼續做</div>
+          <div class="fdesc">唔使重新 clone</div></td>
+        <td data-l="Prompt">
+          <pre class="prompt" id="g9">我開咗上次個資料夾繼續做。
+
+幫我攞返 GitHub 上面最新嘅版本（如果呢部電腦有更新過）。
+如果有衝突，先話我知，唔好自己亂咁揀。</pre>
+          <button class="copy" data-t="g9">複製</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:15px;color:var(--b700);letter-spacing:1.2px;margin:26px 0 0">📋 指令速查（導師／想自己打嘅人）</h3>
+  <div class="box" style="background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:10px">
+    <p style="font-size:13.5px;color:var(--muted);margin:0 0 12px">
+      正常情況叫 AI 跑就得。呢啲係佢背後會用到嘅指令，睇一眼會明發生咩事。
+    </p>
+    <pre class="prompt" style="font-size:12.5px">第一次（喺 project 資料夾入面）
+  git init
+  git add .
+  git commit -m "first commit"
+  git branch -M main
+  git remote add origin &lt;repo 網址&gt;
+  git push -u origin main
+
+每次落堂
+  git add .
+  git commit -m "&lt;一句英文&gt;"
+  git push
+
+每次開課（新電腦）
+  git clone &lt;repo 網址&gt;
+
+每次開課（同一部電腦）
+  git pull</pre>
+    <p style="font-size:13px;color:var(--b900);margin:12px 0 0;background:var(--b100);padding:9px 11px;border-radius:8px">
+      <b>三個名記住就夠：</b><br>
+      <code>add</code> = 揀邊啲檔要儲存　·　<code>commit</code> = 打個記錄　·　<code>push</code> = 寄上 GitHub
+    </p>
+  </div>
+</section>
+
 <!-- ══════ 堂 1 ══════ -->
 <section data-k="1">
   <div class="sechead">
@@ -802,6 +1002,35 @@ var LESSON_ERR = {
       + "我喺自己部電腦睇係正常嘅。\n\n"
       + "用 3 句話講最可能係咩原因\n"
       + "（考慮：檔名大細寫、路徑、有冇交齊檔）。" }
+  ],
+  'G': [
+    { t:"⌨️ 打 git 話「唔係內部或外部命令」",
+      p:"我打 git 嘅時候，佢話「不是內部或外部命令」（或者類似嘅話）。\n\n"
+      + "用 3 句話講最可能係咩原因。\n"
+      + "然後一步一步教我點解決。\n"
+      + "唔好叫我重新安裝 Cursor。" },
+    { t:"🔐 要密碼／認證失敗",
+      p:"佢叫我入密碼，或者話認證失敗（authentication failed）。\n\n"
+      + "我用 Windows，第一次上傳自己嘅 code 上 GitHub。\n\n"
+      + "一步一步教我應該點做（我唔想亂咁入密碼）。\n"
+      + "如果要用特別嘅密碼而唔係我嘅登入密碼，解釋畀我知點解。" },
+    { t:"😱 唔記得咗落堂上傳",
+      p:"我上一堂冇上傳到，而家部電腦已經唔同咗／啲嘢冇咗。\n\n"
+      + "我仲可以點做？\n"
+      + "先話我知有咩可能，然後由最簡單嘅方法開始試。\n"
+      + "唔好叫我放棄重做。" },
+    { t:"⚔️ 有衝突（conflict）",
+      p:"佢話有衝突（conflict），有兩邊唔同嘅版本。\n\n"
+      + "先唔好自己揀。\n"
+      + "用 3 句話我知：發生咩事？兩邊分別係咩？\n"
+      + "然後話我知我應該點揀（我唔想失去我做過嘅嘢）。" },
+    { t:"🌐 上傳咗但係 GitHub 見唔到",
+      p:"我叫咗你上傳，但係我喺 GitHub 網站見唔到新嘅檔。\n\n"
+      + "教我點自己查：\n"
+      + "1. 我要睇邊一頁\n"
+      + "2. 可能係邊幾種情況\n"
+      + "3. 我可以點自己確認\n\n"
+      + "唔好改任何嘢。" }
   ]
 };
 
@@ -809,8 +1038,8 @@ var LESSON_ERR = {
    ║ 分頁 + 解難面板                                      ║
    ╚══════════════════════════════════════════════════════╝ */
 (function(){
-  var LAB = {'0':'🔥 熱身','1':'堂 1','2':'堂 2','3':'堂 3','4':'堂 4','5':'堂 5'};
-  var ORDER = ['0','1','2','3','4','5'];
+  var LAB = {'0':'🔥 熱身','G':'💾 儲存','1':'堂 1','2':'堂 2','3':'堂 3','4':'堂 4','5':'堂 5'};
+  var ORDER = ['0','G','1','2','3','4','5'];
   var secs = Array.prototype.slice.call(document.querySelectorAll('section'));
   var tabs = document.getElementById('tabs');
   var opened = null;
@@ -901,6 +1130,43 @@ var LESSON_ERR = {
       try { document.execCommand('copy'); } catch(e2){}
       document.body.removeChild(ta); done();
     }
+  });
+
+  /* ── 每堂自動插入「📥 開課」同「💾 落堂」兩步 ──
+     只寫一次，五堂一齊有。改呢兩段字就五堂都受影響。 */
+  var GIT_OPEN_P = "我而家喺一部新嘅電腦（或者重裝過）。\n"
+    + "我上次嘅 code 放咗喺 GitHub：<repo 網址>\n\n"
+    + "一步一步教我點樣攞返所有檔落嚟：\n"
+    + "1. 要打咩指令、喺 Cursor 邊個位打\n"
+    + "2. 會存喺邊個資料夾\n"
+    + "3. 攞完之後點樣喺 Cursor 開嚟睇\n\n"
+    + "你幫我跑都得。跑完話我知我應該見到咩。\n\n"
+    + "（如果係同一部電腦，唔使重新 clone，叫 AI 做 git pull 就得。）";
+
+  var GIT_SAVE_P = "我要落堂喇，要將今日做嘅嘢全部存上 GitHub。\n\n"
+    + "請你幫我：\n"
+    + "1. 先列出今日改咗邊幾個檔（我想睇下先）\n"
+    + "2. 幫我寫一句 commit message（英文，一句為限）\n"
+    + "3. 上傳上去\n\n"
+    + "跑完話我知成功定失敗，同埋我點自己確認。";
+
+  function gitRow(id, title, desc, text){
+    return '<tr><td data-l="做咩"><div class="fname">' + title + '</div>'
+         + '<div class="fdesc">' + desc + '</div></td>'
+         + '<td data-l="Prompt"><pre class="prompt" id="' + id + '">' + esc(text) + '</pre>'
+         + '<button class="copy" data-t="' + id + '">複製</button></td></tr>';
+  }
+  ['1','2','3','4','5'].forEach(function(k){
+    var sec = document.querySelector('section[data-k="' + k + '"]');
+    if (!sec) return;
+    var tb = sec.querySelector('tbody');
+    if (!tb) return;
+    tb.insertAdjacentHTML('afterbegin',
+      gitRow('go-' + k, '📥 開課：攞返上次嘅 code',
+             '每堂第一件事（換咗電腦就要）', GIT_OPEN_P));
+    tb.insertAdjacentHTML('beforeend',
+      gitRow('gs-' + k, '💾 落堂：儲存 ＋ 上傳',
+             '落堂前最後一件事', GIT_SAVE_P));
   });
 
   var saved = null;
